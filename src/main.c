@@ -14,6 +14,7 @@ int main(int argc, const char *argv[]) {
     int length = 0;
     struct Token *tokens = lex(source, &length);
     struct Token *arrangedTokens = arrange(tokens, length);
+    printTokens(arrangedTokens, length);
     printf("Result of %s: %d\n", source, evaluate(arrangedTokens, length));
 
     freeTokens(tokens, length);

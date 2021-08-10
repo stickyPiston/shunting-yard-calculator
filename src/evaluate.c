@@ -27,8 +27,8 @@ int evaluate(struct Token *tokens, size_t length) {
     } else if (token.type == OPERATOR) {
       struct Token lhsToken = popFromStack(&stack);
       struct Token rhsToken = popFromStack(&stack);
-      int lhs = strtoi(lhsToken.value);
-      int rhs = strtoi(rhsToken.value);
+      int rhs = strtoi(lhsToken.value);
+      int lhs = strtoi(rhsToken.value);
 
       int result;
       switch (token.value[0]) {
@@ -54,6 +54,7 @@ int evaluate(struct Token *tokens, size_t length) {
       }
 
       // This is not the best method to save the data to a stack, but i didn't want to remake a new stack data structure for just ints if i already have a stack for Tokens
+      // If i was working in c++, i would have created generic queue and stack classes, but i don't want to use c++
       pushToStack(&stack, (struct Token){ itostr(result), NUMBER });
     }
 

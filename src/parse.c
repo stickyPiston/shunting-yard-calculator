@@ -38,10 +38,16 @@ struct Token *arrange(struct Token *tokens, size_t length) {
       } break;
 
       case OPERATOR: {
-        struct Token *stackFirst = first(&stack);
-        while (stackFirst && getopt(stackFirst->value[0]).presedence > getopt(token.value[0]).presedence) {
-          pushToQueue(&queue, popFromStack(&stack));
-          stackFirst = first(&stack);
+        while (1) {
+          struct Token *stackFirst = first(&stack);
+          if (!stackFirst) break;
+
+          struct Operator o1 = getopt(stackFirst->value[0]);
+          struct Operator o2 = getopt(token.value[0]);
+          if (o1.presedence > o2.presedence || (o1.associativity == LEFT && o1.presedence == o2.presedence))
+            pushToQueue(&queue, popFromStack(&stack));
+          else
+            break;
         }
         pushToStack(&stack, token);
       } break;

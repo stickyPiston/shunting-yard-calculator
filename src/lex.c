@@ -13,8 +13,9 @@ void addToken(struct Token **tokens, size_t *size, char *value, enum TokenType t
 }
 
 void printTokens(struct Token *tokens, size_t length) {
+  puts("Tokens:");
   for (size_t i = 0; i < length; i++)
-    printf("%zu: %s", i, tokens[i].value);
+    printf("%zu: %s\n", i, tokens[i].value);
 }
 
 void freeTokens(struct Token *tokens, size_t count) {
