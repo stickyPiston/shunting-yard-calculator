@@ -55,7 +55,7 @@ int evaluate(struct Token *tokens, size_t length) {
 
       // This is not the best method to save the data to a stack, but i didn't want to remake a new stack data structure for just ints if i already have a stack for Tokens
       // If i was working in c++, i would have created generic queue and stack classes, but i don't want to use c++
-      pushToStack(&stack, (struct Token){ itostr(result), NUMBER });
+      pushToStack(&stack, (struct Token){ itostr(result), token.index, NUMBER });
     }
 
     index++;

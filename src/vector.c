@@ -1,4 +1,5 @@
 #include <vector.h>
+#include <stdio.h>
 
 void pushToQueue(struct Vector *queue, struct Token token) {
   queue->tokens = realloc(queue->tokens, ++queue->size * sizeof(struct Token));
@@ -15,7 +16,7 @@ struct Token popFromStack(struct Vector *stack) {
     stack->tokens = realloc(stack->tokens, --stack->size * sizeof(struct Token));
     return token;
   } else {
-    return (struct Token){ NULL, NONE };
+    return (struct Token){ NULL, 0, NONE };
   }
 }
 

@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-void addToken(struct Token **tokens, size_t *size, char *value, enum TokenType type) {
+void addToken(struct Token **tokens, size_t *size, char *value, enum TokenType type, size_t index) {
   *tokens = realloc(*tokens, (*size + 1) * sizeof(struct Token));
-  (*tokens)[*size - 1] = (struct Token){value, type};
+  (*tokens)[*size - 1] = (struct Token){value, index, type};
   *size += 1;
 }
 
@@ -29,7 +29,7 @@ bool isOperator(char c) {
   return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
 }
 
-struct Token *lex(const char *source, int *length) {
+struct Token *lex(const char *source, size_t *length) {
   struct Token *tokens = malloc(sizeof(struct Token));
   size_t tokenCount = 1;
 
@@ -45,11 +45,16 @@ struct Token *lex(const char *source, int *length) {
         num[index++] = source[lexindex++];
       }
       num[index] = '\0';
-      addToken(&tokens, &tokenCount, num, NUMBER);
+      addToken(&tokens, &tokenCount, num, NUMBER, lexindex);
     } else if (isOperator(c)) { // operator
       char *operatorString = calloc(2, 1);
       operatorString[0] = c;
-      addToken(&tokens, &tokenCount, operatorString, OPERATOR);
+      addToken(&tokens, &tokenCount, operatorString, OPERATOR, lexindex);
+      lexindex++;
+    } else if (c == '(' || c == ')') {
+      char *bracketString = calloc(2, 1);
+      bracketString[0] = c;
+      addToken(&tokens, &tokenCount, bracketString, BRACKET, lexindex);
       lexindex++;
     }
   }

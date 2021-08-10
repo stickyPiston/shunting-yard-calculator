@@ -6,16 +6,18 @@
 enum TokenType {
   NUMBER,
   OPERATOR,
+  BRACKET,
   NONE
 };
 
 struct Token {
   char *value;
+  size_t index;
   enum TokenType type;
 };
 
 void printTokens(struct Token *, size_t);
 void freeTokens(struct Token *, size_t);
-struct Token *lex(const char *, int *);
+struct Token *lex(const char *, size_t *);
 
 #endif

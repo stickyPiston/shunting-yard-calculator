@@ -1,6 +1,7 @@
 #include <lex.h>
 #include <parse.h>
 #include <vector.h>
+#include <error.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -25,12 +26,12 @@ struct Operator getopt(char name) {
 
 // Public methods
 
-struct Token *arrange(struct Token *tokens, size_t length) {
+struct Token *arrange(struct Token *tokens, size_t *length) {
   struct Vector queue = initVector();
   struct Vector stack = initVector();
 
   size_t index = 0;
-  while (index < length) {
+  while (index < *length) {
     struct Token token = tokens[index];
     switch (token.type) {
       case NUMBER: {
@@ -52,14 +53,30 @@ struct Token *arrange(struct Token *tokens, size_t length) {
         pushToStack(&stack, token);
       } break;
 
+      case BRACKET: {
+        if (token.value[0] == '(') {
+          pushToStack(&stack, token);
+        } else {
+          while (1) {
+            struct Token t = popFromStack(&stack);
+            if (t.type == NONE) reportError("Mismatched bracket", token.index);
+            if (t.value[0] == '(') break;
+            else pushToQueue(&queue, t);
+          }
+        }
+      } break;
+
       default: break;
     }
     index++;
   }
 
   while (stack.size > 1) {
-    pushToQueue(&queue, popFromStack(&stack));
+    struct Token t = popFromStack(&stack);
+    if (t.value[0] == '(' || t.value[0] == ')') reportError("Mismatched bracket", t.index);
+    pushToQueue(&queue, t);
   }
 
+  *length = queue.size - 1;
   return queue.tokens;
 }

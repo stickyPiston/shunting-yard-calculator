@@ -12,6 +12,6 @@ struct Operator {
   enum Associativity associativity;
 };
 
-struct Token *arrange(struct Token *, size_t length);
+struct Token *arrange(struct Token *, size_t *length);
 
 #endif
