@@ -14,7 +14,18 @@ const char *source = NULL;
 
 int main(int argc, const char *argv[]) {
   if (argc == 2) {
-    source = argv[1];
+    FILE *fp = fopen(argv[1], "r");
+    if (fp == NULL) {
+      source = argv[1];
+    } else {
+      fseek(fp, 0, SEEK_END);
+      size_t byteCount = ftell(fp);
+      fseek(fp, 0, SEEK_SET);
+      source = calloc(byteCount, 1);
+      fread((char *)source, 1, byteCount, fp);
+    }
+    fclose(fp);
+
     size_t length = 0;
     struct Token *tokens = lex(source, &length);
     struct Vector *expressions = split(tokens, &length);
