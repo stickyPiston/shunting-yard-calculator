@@ -8,6 +8,7 @@ enum TokenType {
   IDENTIFIER,
   OPERATOR,
   BRACKET,
+  DELIMITER,
   NONE
 };
 

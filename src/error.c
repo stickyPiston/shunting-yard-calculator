@@ -20,7 +20,7 @@ void reportError(const char *reason, size_t index) {
   }
 
   char *arrow = calloc(col + 2, 1);
-  int offset = 2;
+  int offset = 3;
   if (i == sourceLength - 1) offset = 1;
   memset(arrow, '~', col - offset);
   arrow[col - offset] = '^';

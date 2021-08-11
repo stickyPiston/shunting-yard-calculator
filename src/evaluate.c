@@ -56,9 +56,11 @@ int getValue(struct VariableMap *map, struct Token t) {
   return 0;
 }
 
+static struct VariableMap variables = { NULL, 0 , 0 }; 
 int evaluate(struct Token *tokens, size_t length) {
   struct Vector stack = initVector();
-  struct VariableMap variables = { malloc(sizeof(struct Variable)), 0, 1 };
+  if (variables.capacity == 0)
+    variables = (struct VariableMap){ malloc(sizeof(struct Variable)), 0, 1 };
 
   size_t index = 0;
   while (index < length) {

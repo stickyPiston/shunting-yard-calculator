@@ -32,7 +32,7 @@ struct Token *arrange(struct Token *tokens, size_t *length) {
   struct Vector stack = initVector();
 
   size_t index = 0;
-  while (index < *length) {
+  while (index < *length - 1) {
     struct Token token = tokens[index];
     switch (token.type) {
       case IDENTIFIER:

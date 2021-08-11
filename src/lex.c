@@ -1,5 +1,6 @@
 #include <lex.h>
 #include <parse.h>
+#include <error.h>
 
 #include <ctype.h>
 #include <stdio.h>
@@ -64,6 +65,11 @@ struct Token *lex(const char *source, size_t *length) {
       bracketString[0] = c;
       addToken(&tokens, &tokenCount, bracketString, BRACKET, lexindex);
       lexindex++;
+    } else if (c == ';') {
+      addToken(&tokens, &tokenCount, ";", DELIMITER, lexindex);
+      lexindex++;
+    } else {
+      reportError("Unknown token", lexindex);
     }
   }
 
