@@ -8,14 +8,15 @@
 
 // Operator helper methods
 
-static struct Operator operators[5] = {
+struct Operator operators[] = {
+  {'=', 1, RIGHT},
   {'+', 2, LEFT},
   {'-', 2, LEFT},
   {'/', 3, LEFT},
   {'*', 3, LEFT},
   {'^', 4, RIGHT}
 };
-static size_t operatorsSize = sizeof(operators) / sizeof(operators[0]);
+size_t operatorsSize = sizeof(operators) / sizeof(operators[0]);
 
 struct Operator getopt(char name) {
   for (size_t i = 0; i < operatorsSize; i++) {
@@ -34,6 +35,7 @@ struct Token *arrange(struct Token *tokens, size_t *length) {
   while (index < *length) {
     struct Token token = tokens[index];
     switch (token.type) {
+      case IDENTIFIER:
       case NUMBER: {
         pushToQueue(&queue, token);
       } break;

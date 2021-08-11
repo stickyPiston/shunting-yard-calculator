@@ -1,10 +1,13 @@
 #include <lex.h>
+#include <parse.h>
 
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+
+#define MAX_IDENTIFIER_LENGTH 128
 
 void addToken(struct Token **tokens, size_t *size, char *value, enum TokenType type, size_t index) {
   *tokens = realloc(*tokens, (*size + 1) * sizeof(struct Token));
@@ -26,7 +29,7 @@ void freeTokens(struct Token *tokens, size_t count) {
 }
 
 bool isOperator(char c) {
-  return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+  return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '=';
 }
 
 struct Token *lex(const char *source, size_t *length) {
@@ -44,8 +47,13 @@ struct Token *lex(const char *source, size_t *length) {
       while (isdigit(source[lexindex])) {
         num[index++] = source[lexindex++];
       }
-      num[index] = '\0';
       addToken(&tokens, &tokenCount, num, NUMBER, lexindex);
+    } else if (isalpha(c)) { // identifier
+      char *identifier = calloc(MAX_IDENTIFIER_LENGTH, 1); int index = 0;
+      while (isalnum(source[lexindex])) {
+        identifier[index++] = source[lexindex++];
+      }
+      addToken(&tokens, &tokenCount, identifier, IDENTIFIER, lexindex);
     } else if (isOperator(c)) { // operator
       char *operatorString = calloc(2, 1);
       operatorString[0] = c;

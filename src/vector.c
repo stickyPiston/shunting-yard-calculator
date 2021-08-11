@@ -27,6 +27,12 @@ struct Token *first(struct Vector *v) {
     return NULL;
 }
 
+void printVector(struct Vector *v) {
+  for (size_t i = 0; i < v->size - 1; i++) {
+    printf("%zu: %s\n", i, v->tokens[i].value);
+  }
+}
+
 struct Vector initVector() {
   return (struct Vector){ 1, malloc(sizeof(struct Token)) };
 }

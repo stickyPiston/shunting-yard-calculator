@@ -14,6 +14,7 @@ void pushToQueue(struct Vector *queue, struct Token token);
 void pushToStack(struct Vector *stack, struct Token token);
 struct Token popFromStack(struct Vector *stack);
 struct Token *first(struct Vector *v);
+void printVector(struct Vector *v);
 struct Vector initVector();
 
 #endif
